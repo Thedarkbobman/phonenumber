@@ -1,0 +1,89 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Click the button to submit your phone number</p>
+<p id="locationText">Current Location: </p>
+
+<form>
+Phone Number:<br>
+<input type="text" name="number" id = "numberText" disabled="disabled">
+
+</form>
+
+<button onclick="getLocation()">Check Location</button>
+<button onclick="submit()">Submit</button>
+
+<div id="mapholder"></div>
+
+<script>
+var x = document.getElementById("locationText");
+var y = document.getElementById("numberText");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function submit(){
+	if(y.value===""){
+	 var submitAlert = alert("Check Location First!");
+	}
+	else{
+	var submitAlert = alert("Number Submitted!");
+	}
+}
+
+function showPosition(position) {
+
+    x.innerHTML = "Current Location: " + position.coords.latitude + 
+    "; Longitude: " + position.coords.longitude;
+	//if(Math.abs(position.coords.latitude)>Math.abs(position.coords.longitude)){
+	var part1 = Math.abs(position.coords.latitude).toString();
+	part1 = part1.replace(/\./g,'');
+	var part2 = Math.abs(position.coords.longitude).toString();
+	part2 = part2.replace(/\./g,'');
+	var numberString = part1.substring(0,5)+part2.substring(0,5);
+	y.value = numberString;
+	
+	/*else{
+	var part1 = Math.abs(position.coords.latitude).toString();
+	part1 = part1.replace(/\./g,'');
+	var part2 = Math.abs(position.coords.longitude).toString();
+	part2 = part2.replace(/\./g,'');
+	var numberString = part1.substring(0,5)+part2.substring(0,5);
+	y.innerHTML = numberString;
+	}*/
+	   var latlon = position.coords.latitude + "," + position.coords.longitude;
+    var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
+    +latlon+"&zoom=14&size=400x300"+"&markers=color:red|label:A|"+latlon+"&key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU";
+    document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+	
+}
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+ 
+</script>
+</body>
+</html>
