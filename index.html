@@ -19,11 +19,11 @@ Phone Number:<br>
 <button onclick="submit()">Submit</button>
 
 <div id="mapholder"></div>
-
+<script type='text/javascript' src='config.js'></script>
 <script>
 var x = document.getElementById("locationText");
 var y = document.getElementById("numberText");
-
+var mykey = config.MY_KEY;
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -63,7 +63,7 @@ function showPosition(position) {
 	}*/
 	   var latlon = position.coords.latitude + "," + position.coords.longitude;
     var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="
-    +latlon+"&zoom=14&size=400x300"+"&markers=color:red|label:A|"+latlon+"&key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU";
+    +latlon+"&zoom=14&size=400x300"+"&markers=color:red|label:A|"+latlon+"&key="+mykey;
     document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
 	
 }
@@ -85,5 +85,6 @@ function showError(error) {
 }
  
 </script>
+
 </body>
 </html>
